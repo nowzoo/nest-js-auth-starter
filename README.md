@@ -1,6 +1,10 @@
 # Nest.js Auth Sample
 
-A starter library for authentication using email/password to sign in and JWT for API access. Based on the example from the [NestJS Authentication docs](https://docs.nestjs.com/techniques/authentication). [Repo](https://github.com/nestjs/nest/tree/master/sample/19-auth-jwt)
+A starter library for authentication using email/password to sign in and JWT for API access. Based on the example from the [NestJS Authentication docs](https://docs.nestjs.com/techniques/authentication). [Repo](https://github.com/nestjs/nest/tree/master/sample/19-auth-jwt).
+
+**Note that you should not use this in production as is**. At the very least you should:
+ - switch to https
+ - change the JWT signing algorithm to use certificates (RS256) 
 
 ## Quick Start
 
