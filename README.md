@@ -92,7 +92,7 @@ curl -X POST http://localhost:3001/auth/sign-in -d '{"email": "foo@bar.com", "pa
 
 `GET /profile` 
 
-An api route protected by a JWT. Provide a JWT (fetched from one of the other two endpoints) in the request header.
+An api route protected by a JWT. Provide the token (fetched from one of the other two endpoints) in the request header.
 
 ```bash
 # Note the token is truncated below.
