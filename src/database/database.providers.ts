@@ -9,7 +9,7 @@ export const databaseProviders = [
       port: 3306,
       username: 'root',
       password: '',
-      database: 'linketyspli',
+      database: 'nest_auth_demo',
       entities: [
         __dirname + '/../**/*.entity{.ts,.js}',
       ],

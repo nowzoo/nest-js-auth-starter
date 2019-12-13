@@ -1,30 +1,35 @@
-import { Injectable } from '@nestjs/common';
-import { UsersService, User } from '../users/users.service';
+import { Injectable, BadRequestException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { Request } from 'express';
+import { UserService } from '../user/user.service';
+import { User } from '../user/user.entity';
+import * as bcrypt from 'bcryptjs';
 
 @Injectable()
 export class AuthService {
   constructor(
-    private readonly usersService: UsersService,
+    private readonly userService: UserService,
     private readonly jwtService: JwtService,
   ) {}
 
   async signIn(email: string, password: string): Promise<User> {
-    const user = await this.usersService.findOne(email);
-    if (user && user.password === password) {
-      delete user.password;
-      return user;
+    const user = await this.userService.findByEmail(email);
+    if (! user) {
+      throw new BadRequestException('auth/account-not-found');
     }
-    return null;
+    const matches: boolean = await bcrypt.compare(password, user.password);
+    if (! matches) {
+      throw new BadRequestException('auth/wrong-password');
+    }
+    delete user.password;
+    return user;
   }
 
   async signUp(name: string, email: string, password: string): Promise<User> {
-    const existing = await this.usersService.findOne(email);
+    const existing = await this.userService.findByEmail(email);
     if (existing) {
-      return null;
+      throw new BadRequestException('auth/account-exists');
     }
-    const user: User = await this.usersService.create(name, email, password);
+    const user: User = await this.userService.create(name, email, password);
     delete user.password;
     return user;
   }
@@ -35,4 +40,5 @@ export class AuthService {
       access_token: this.jwtService.sign(payload),
     };
   }
+
 }
